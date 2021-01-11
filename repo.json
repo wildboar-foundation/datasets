@@ -1,0 +1,24 @@
+{
+  "name": "wildboar",
+  "version": "1.0",
+  "wildboar_requires": "1.0.3.dev0",
+  "url": "https://github.com/isaksamsten/wildboar-datasets/releases/download/{key}-v{version}/bundle.zip",
+  "bundles": [
+    {
+      "key": "ucr",
+      "version": "1.0",
+      "name": "UCR Time series repository",
+      "description": "A collection of 128 univariate time series. Downloaded from UCR Time series repository",
+      "hash": "11bacbb31ccfe928be38740107dab38218ac50fa",
+      "class_index": -1
+    },
+    {
+      "key": "ucr-tiny",
+      "version": "1.0",
+      "name": "UCR Time series repository (sample)",
+      "description": "A collection of 4 univariate time series. Downloaded from UCR Time series repository",
+      "hash": "a04e9a0327ad019ee72aa78519d8b43381357d4f",
+      "class_index": -1
+    }
+  ]
+}
