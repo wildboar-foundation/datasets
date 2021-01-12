@@ -14,10 +14,10 @@
     },
     {
       "key": "ucr-tiny",
-      "version": "1.0",
+      "version": "1.0.1",
       "name": "UCR Time series repository (sample)",
-      "description": "A collection of 4 univariate time series. Downloaded from UCR Time series repository",
-      "hash": "a04e9a0327ad019ee72aa78519d8b43381357d4f",
+      "description": "A collection of 5 univariate time series. Downloaded from UCR Time series repository",
+      "hash": "d49fecf8d68aceed3ab8c144f8bf6f8194ba9d49",
       "class_index": -1
     }
   ]
