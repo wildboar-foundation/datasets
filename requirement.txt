@@ -1,0 +1,2 @@
+wildboar==1.0.3
+networkx==2.5
