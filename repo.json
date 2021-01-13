@@ -19,6 +19,14 @@
       "description": "A collection of 5 univariate time series. Downloaded from UCR Time series repository",
       "hash": "d49fecf8d68aceed3ab8c144f8bf6f8194ba9d49",
       "class_index": -1
+    },
+    {
+      "key": "ucr-no-missing",
+      "version": "1.0",
+      "name": "UCR Time series repository (sample)",
+      "description": "A collection of 5 univariate time series. Downloaded from UCR Time series repository",
+      "hash": "dccc4b20fe2c0b3f9698461c2e5be20028c5d00c",
+      "class_index": -1
     }
   ]
 }
