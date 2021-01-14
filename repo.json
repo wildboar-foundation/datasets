@@ -2,7 +2,7 @@
   "name": "wildboar",
   "version": "1.0",
   "wildboar_requires": "1.0.3.dev0",
-  "url": "https://github.com/isaksamsten/wildboar-datasets/releases/download/{bundle}-v{version}",
+  "bundle_url": "https://github.com/isaksamsten/wildboar-datasets/releases/download/{bundle}-v{version}/{tag}",
   "bundles": [
     {
       "key": "ucr",
