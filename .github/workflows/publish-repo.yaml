@@ -1,0 +1,15 @@
+name: Build and deploy documentation
+on: [push]
+jobs:
+  build_docs:
+    name: Build and deploy documentation
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push' && (github.ref == 'refs/heads/master' || startsWith(github.event.ref, 'refs/heads/repo-v'))
+    steps:
+      - uses: actions/checkout@v2
+      - name: Deploy repository
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./
+          destination_dir: ${{ GITHUB_REF#refs/heads/ }}
