@@ -1,8 +1,8 @@
-name: Build and deploy documentation
+name: Deploy JSON repository
 on: [push]
 jobs:
   build_docs:
-    name: Build and deploy documentation
+    name: Deploy repository
     runs-on: ubuntu-latest
     if: github.event_name == 'push' && (github.ref == 'refs/heads/master' || startsWith(github.event.ref, 'refs/heads/repo-v'))
     steps:
@@ -13,9 +13,15 @@ jobs:
         run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
         id: extract_branch
 
-      - name: Deploy repository
+      - name: Move files
+        run: |
+          mkdir repo
+          mv repo.json repo/
+
+      - name: Deploy repository JSON-file
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./
+          publish_dir: ./repo
           destination_dir: ${{ steps.extract_branch.outputs.branch }}
+          keep_files: true
