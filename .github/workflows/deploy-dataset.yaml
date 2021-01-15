@@ -1,17 +1,15 @@
 name: Deploy UCR dataset
-on: [push]
+on:
+  push:
+    tags:
+      - 'ucr-v*'
+
 jobs:
   build_docs:
     name: Deploy repository
     runs-on: ubuntu-latest
-    if: github.event_name == 'push' && startsWith(github.event.ref, 'refs/tags/ucr-v')
     steps:
       - uses: actions/checkout@v2
-
-      - name: Extract tag name
-        shell: bash
-        run: echo "##[set-output name=tag;]$(echo ${GITHUB_REF#refs/tags/})"
-        id: extract_tag
 
       - uses: actions/setup-python@v2
         name: Install Python
@@ -30,10 +28,9 @@ jobs:
           sha1sum bundles/default.zip | cut -d " " -f 1 > bundles/default.sha1
           sha1sum bundles/no-missing.zip | cut -d " " -f 1 > bundles/no-missing.sha1
 
-      - name: Deploy data repository
-        uses: peaceiris/actions-gh-pages@v3
+      - uses: alexellis/upload-assets@0.2.3
+        name: Upload artifacts
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./bundles
-          destination_dir: files/${{ steps.extract_tag.outputs.tag }}
-          keep_files: true
+          asset_paths: '["./bundles/*"]'
