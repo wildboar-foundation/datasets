@@ -39,7 +39,7 @@ if __name__ == "__main__":
                 ) as io_wrapper:
                     arff, _metadata = loadarff(io_wrapper)
                     arr = np.array(arff.tolist()).astype(np.float32)
-                    if NO_MISSING and not np.any(np.isnan(arr)):
+                    if NO_MISSING and np.any(np.isnan(arr)):
                         continue
                     np.save(
                         os.path.join(RESULT_DIR, filename) + ".npy",
