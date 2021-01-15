@@ -1,0 +1,64 @@
+name: Deploy outlier datasets
+on: [push]
+
+jobs:
+  build_bundle:
+    name: Build data bundle
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - uses: actions/checkout@v2
+        with:
+          name: isaksamsten/wildboar
+          ref: 8368120c7835deac5b7cd360eb7d07db119d389a
+          path: wildboar/
+
+      - uses: actions/setup-python@v2
+        name: Install Python
+        with:
+          python-version: '3.8'
+
+      - name: Install dependencies
+        run: |
+          pip install -U pip
+          pip install -r requirements.txt
+          pip install -r wildboar/requirements.txt
+          pip install ./wildboar
+
+      - name: Build data bundles
+        run: |
+          mkdir bundles
+          CB_DATASET_FILE=datasets.zip CB_RESULT_DIR=default CB_INCLUDE_DATASET="Beef,Coffee,GunPoint,TwoLeadECG,SyntheticControl" python create_bundle.py
+          zip bundles/default.zip -r --junk-paths default/
+          sha1sum bundles/default.zip | cut -d " " -f 1 > bundles/default.sha1
+
+      - uses: actions/upload-artifact@v2
+        with:
+          name: bundles
+          path: bundles/*
+
+  deploy_bundle:
+    name: Deploy data bundle
+    runs-on: ubuntu-latest
+    if: startsWith(github.event.ref, 'refs/tags/outlier-v')
+    steps:
+      - uses: actions/download-artifact@v2
+        with:
+          name: bundles
+          path: bundles
+
+      - uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: ${{ github.ref }}
+
+      - uses: alexellis/upload-assets@0.2.2
+        if: startsWith(github.event.ref, 'refs/tags/outlier-v')
+        name: Upload artifacts
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          asset_paths: '["./bundles/*"]'
