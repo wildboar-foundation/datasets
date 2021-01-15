@@ -13,6 +13,11 @@ jobs:
         run: echo "##[set-output name=tag;]$(echo ${GITHUB_REF#refs/tags/})"
         id: extract_tag
 
+      - uses: actions/setup-python@v2
+        name: Install Python
+        with:
+          python-version: '3.8'
+
       - name: Build data bundles
         run: |
           pip install -U pip
