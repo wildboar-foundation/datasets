@@ -28,6 +28,13 @@ jobs:
           sha1sum bundles/default.zip | cut -d " " -f 1 > bundles/default.sha1
           sha1sum bundles/no-missing.zip | cut -d " " -f 1 > bundles/no-missing.sha1
 
+      - uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: ${{ github.ref }}
+
       - uses: alexellis/upload-assets@0.2.2
         name: Upload artifacts
         env:
