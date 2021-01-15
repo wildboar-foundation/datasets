@@ -10,7 +10,7 @@ jobs:
 
       - uses: actions/checkout@v2
         with:
-          name: isaksamsten/wildboar
+          repository: isaksamsten/wildboar
           ref: 8368120c7835deac5b7cd360eb7d07db119d389a
           path: wildboar/
 
