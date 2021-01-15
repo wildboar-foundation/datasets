@@ -16,10 +16,13 @@ jobs:
         with:
           python-version: '3.8'
 
-      - name: Build data bundles
+      - name: Install dependencies
         run: |
           pip install -U pip
           pip install -r requirements.txt
+
+      - name: Build data bundles
+        run: |
           mkdir bundles
           CB_DATASET_FILE=dataset.zip CB_RESULT_DIR=default python create_bundle.py
           CB_DATASET_FILE=dataset.zip CB_RESULT_DIR=no-missing CB_NO_MISSING=1 python create_bundle.py
