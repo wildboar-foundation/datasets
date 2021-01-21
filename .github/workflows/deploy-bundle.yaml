@@ -29,9 +29,12 @@ jobs:
       - name: Build data bundles
         run: |
           mkdir bundles
-          CB_DATASET_FILE=datasets.zip CB_RESULT_DIR=default CB_INCLUDE_DATASET="Beef,Coffee,GunPoint,TwoLeadECG,SyntheticControl" python create_bundle.py
-          zip bundles/default.zip -r --junk-paths default/
-          sha1sum bundles/default.zip | cut -d " " -f 1 > bundles/default.sha1
+          CB_RESULT_DIR=easy CB_RANDOM_STATE=123 CB_DIFFICULTY=simplest python create_bundle.py
+          zip bundles/easy.zip -r --junk-paths easy/
+          sha1sum bundles/easy.zip | cut -d " " -f 1 > bundles/easy.sha1
+          CB_RESULT_DIR=hard CB_RANDOM_STATE=123 CB_DIFFICULTY=hardest python create_bundle.py
+          zip bundles/hard.zip -r --junk-paths hard/
+          sha1sum bundles/hard.zip | cut -d " " -f 1 > bundles/hard.sha1
 
       - uses: actions/upload-artifact@v2
         with:
@@ -56,7 +59,6 @@ jobs:
           release_name: ${{ github.ref }}
 
       - uses: alexellis/upload-assets@0.2.2
-        if: startsWith(github.event.ref, 'refs/tags/outlier-v')
         name: Upload artifacts
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
