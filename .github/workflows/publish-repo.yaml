@@ -4,7 +4,7 @@ jobs:
   build_docs:
     name: Deploy repository
     runs-on: ubuntu-latest
-    if: github.event_name == 'push' && (github.ref == 'refs/heads/master' || startsWith(github.event.ref, 'refs/heads/repo-v'))
+    if: github.event_name == 'push' && (github.ref == 'refs/heads/master' || startsWith(github.ref, 'refs/heads/repo-v'))
     steps:
       - uses: actions/checkout@v2
 
