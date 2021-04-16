@@ -1,7 +1,7 @@
 {
   "name": "wildboar",
-  "version": "1.0",
-  "wildboar_requires": "1.0.3.dev0",
+  "version": "1.1",
+  "wildboar_requires": "1.1",
   "bundle_url": "https://github.com/isaksamsten/wildboar-datasets/releases/download/{bundle}-v{version}/{tag}",
   "bundles": [
     {
@@ -9,7 +9,7 @@
       "version": "1.0",
       "name": "UCR Time series repository",
       "description": "A collection of 128 univariate time series. Downloaded from UCR Time series repository",
-      "class_index": -1,
+      "label_index": -1,
       "collections": {
         "bake-off": [
           "Adiac",
@@ -105,14 +105,14 @@
       "version": "1.0.1",
       "name": "UCR Time series repository (sample)",
       "description": "A collection of 5 univariate time series. Downloaded from UCR Time series repository",
-      "class_index": -1
+      "label_index": -1
     },
     {
       "key": "outlier",
       "version": "1.0",
       "name": "UCR Time series repository (outlier detection)",
       "description": "A collection of univariate datasets from the UCR Time series repository, preprocessed for outlier detection using the Emmott labler.",
-      "class_index": -1
+      "label_index": -1
     }
   ]
 }
