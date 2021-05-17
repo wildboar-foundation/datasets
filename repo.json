@@ -113,6 +113,50 @@
       "name": "UCR Time series repository (outlier detection)",
       "description": "A collection of univariate datasets from the UCR Time series repository, preprocessed for outlier detection using the Emmott labler.",
       "label_index": -1
+    },
+    {
+      "key": "tsereg",
+      "version": "1.0",
+      "name": "Monash, UEA & UCR Time Series Extrinsic Regression Repository",
+      "description": "A collection of multivariate datasets from the Monash, UEA & UCR Time Series Extrinsic Regression Repository.",
+      "label_index": -1,
+      "collections": {
+        "uniform-length": [
+          "AustraliaRainfall",
+          "HouseholdPowerConsumption1",
+          "HouseholdPowerConsumption2",
+          "BeijingPM25Quality",
+          "BeijingPM10Quality",
+          "Covid3Month",
+          "LiveFuelMoistureContent",
+          "FloodModeling1",
+          "FloodModeling2",
+          "FloodModeling3",
+          "AppliancesEnergy",
+          "BenzeneConcentration",
+          "NewsHeadlineSentiment",
+          "NewsTitleSentiment",
+          "BIDMC32RR",
+          "BIDMC32HR",
+          "BIDMC32SpO2",
+          "IEEEPPG"
+        ],
+        "no-missing-values": [
+          "AustraliaRainfall",
+          "Covid3Month",
+          "LiveFuelMoistureContent",
+          "FloodModeling1",
+          "FloodModeling2",
+          "FloodModeling3",
+          "AppliancesEnergy",
+          "NewsHeadlineSentiment",
+          "NewsTitleSentiment",
+          "BIDMC32RR",
+          "BIDMC32HR",
+          "BIDMC32SpO2",
+          "IEEEPPG"
+        ]
+      }
     }
   ]
 }
