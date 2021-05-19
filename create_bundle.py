@@ -62,7 +62,7 @@ def load_from_tsfile_to_dataframe(
 
     # Parse the file
     # print(full_file_path_and_name)
-    with io.TextIOWrapper(io_dev, encoding="utf-8") as file:
+    with io.TextIOWrapper(io_dev, encoding="utf-8", errors="ignore") as file:
         for line in file:
             # print(".", end='')
             # Strip white space from start/end of line and change to lowercase for use below
@@ -709,7 +709,7 @@ if __name__ == "__main__":
     RESULT_DIR = os.environ.get("CB_RESULT_DIR", "npz")
     if not os.path.exists(DATASET_FILE):
         download_file(
-            "https://zenodo.org/record/3902651/files/Monash_UEA_UCR_Regression_Archive.zip",
+            "https://zenodo.org/record/4632512/files/Monash_UEA_UCR_Regression_Archive.zip",
             DATASET_FILE,
         )
     if not os.path.exists(RESULT_DIR):
@@ -719,11 +719,10 @@ if __name__ == "__main__":
         for archive_file in archive.filelist:
             path, ext = os.path.splitext(archive_file.filename)
             filename = os.path.basename(path)
-            if (
-                ext == ".ts"
-                and (filename.startswith("AppliancesEnergy"))
-                and (filename.endswith("_TRAIN") or filename.endswith("_TEST"))
+            if ext == ".ts" and (
+                filename.endswith("_TRAIN") or filename.endswith("_TEST")
             ):
+                print("Loading", filename)
                 df_x, y = load_from_tsfile_to_dataframe(archive.open(archive_file))
                 n_timestep = max(df_x[col].loc[0].size for col in df_x)
                 n_samples, n_dims = df_x.shape
@@ -737,4 +736,6 @@ if __name__ == "__main__":
                         x[sample, dim, :length] = sample_col.values
 
                 x = np.squeeze(x)
-                np.savez(os.path.join(RESULT_DIR, filename) + ".npz", x=x, y=y)
+                np.savez(
+                    os.path.join(RESULT_DIR, filename) + ".npz", x=x, y=y.reshape(-1)
+                )
