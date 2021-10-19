@@ -44,7 +44,7 @@ if __name__ == "__main__":
                     archive.open(archive_file), encoding="utf-8"
                 ) as io_wrapper:
                     arff, _metadata = loadarff(io_wrapper)
-                    arr = np.array(arff.tolist())
+                    arr = np.array(arff.tolist()).astype(np.float32)
                     np.save(
                         os.path.join(RESULT_DIR, filename) + ".npy",
                         arr,
