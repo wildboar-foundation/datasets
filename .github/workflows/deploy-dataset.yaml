@@ -2,7 +2,7 @@ name: Deploy UCR dataset
 on:
   push:
     tags:
-      - 'ucr-v*'
+      - 'ucrmts-v*'
 
 jobs:
   build_docs:
