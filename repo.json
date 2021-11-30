@@ -5,6 +5,16 @@
   "bundle_url": "https://github.com/isaksamsten/wildboar-datasets/releases/download/{bundle}-v{version}/{tag}",
   "bundles": [
     {
+      "key": "ucrmts",
+      "version": "1.0",
+      "name": "UCR Time series repository (MTS)",
+      "description": "A collection of multivariate datasets from the UCR Time Series ClassificationRepository.",
+      "arrays": [
+        "x",
+        "y"
+      ]
+    },
+    {
       "key": "ucr",
       "version": "1.0",
       "name": "UCR Time series repository",
