@@ -1,0 +1,43 @@
+name: Deploy UCR dataset
+on:
+  push:
+    tags:
+      - 'ucr-v*'
+
+jobs:
+  build_docs:
+    name: Deploy repository
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - uses: actions/setup-python@v2
+        name: Install Python
+        with:
+          python-version: '3.8'
+
+      - name: Install dependencies
+        run: |
+          pip install -U pip
+          pip install -r requirements.txt
+
+      - name: Build data bundles
+        run: |
+          mkdir bundles
+          CB_DATASET_FILE=dataset.zip CB_RESULT_DIR=default python create_bundle.py
+          zip bundles/default.zip -r --junk-paths default/
+          sha1sum bundles/default.zip | cut -d " " -f 1 > bundles/default.sha1
+
+      - uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: ${{ github.ref }}
+
+      - uses: alexellis/upload-assets@0.2.2
+        name: Upload artifacts
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          asset_paths: '["./bundles/*"]'
