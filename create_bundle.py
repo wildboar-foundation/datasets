@@ -772,6 +772,10 @@ if __name__ == "__main__":
                     for col in df_x
                 )
                 n_samples, n_dims = df_x.shape
+                labels, index, inv = np.unique(
+                    y, return_index=True, return_inverse=True
+                )
+                print(filename, list(zip(labels, index)))
 
                 x = np.full((n_samples, n_dims, n_timestep), np.nan, dtype=np.float32)
 
@@ -782,5 +786,7 @@ if __name__ == "__main__":
 
                 x = np.squeeze(x)
                 np.savez(
-                    os.path.join(RESULT_DIR, filename) + ".npz", x=x, y=y.reshape(-1)
+                    os.path.join(RESULT_DIR, filename) + ".npz",
+                    x=x,
+                    y=inv.reshape(-1),
                 )
