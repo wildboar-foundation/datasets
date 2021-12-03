@@ -4,7 +4,7 @@ import zipfile
 import os
 import numpy as np
 import pandas as pd
-from scipy.io.arff import loadarff
+import sys
 
 
 # The following code is adapted from the python package sktime to read .ts file.
@@ -765,7 +765,6 @@ if __name__ == "__main__":
             if ext == ".ts" and (
                 filename.endswith("_TRAIN") or filename.endswith("_TEST")
             ):
-                print("Loading", filename)
                 df_x, y = load_from_tsfile_to_dataframe(archive.open(archive_file))
                 n_timestep = max(
                     max(df_x[col].loc[i].size for i in range(len(df_x[col])))
@@ -775,9 +774,16 @@ if __name__ == "__main__":
                 labels, index, inv = np.unique(
                     y, return_index=True, return_inverse=True
                 )
-                print(filename, list(zip(labels, index)))
+                print(
+                    "%s: %r"
+                    % (
+                        filename,
+                        list("%s -> %r" % (l, inv[i]) for l, i in zip(labels, index)),
+                    ),
+                )
 
-                x = np.full((n_samples, n_dims, n_timestep), np.nan, dtype=np.float32)
+                # We use -INF to represent end of sequence
+                x = np.full((n_samples, n_dims, n_timestep), -np.inf, dtype=np.float32)
 
                 for dim, col in enumerate(df_x):
                     df_dim = df_x[col]
