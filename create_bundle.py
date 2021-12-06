@@ -727,7 +727,7 @@ if __name__ == "__main__":
                 n_timestep = max(df_x[col].loc[0].size for col in df_x)
                 n_samples, n_dims = df_x.shape
 
-                x = np.full((n_samples, n_dims, n_timestep), np.nan, dtype=np.float32)
+                x = np.full((n_samples, n_dims, n_timestep), -np.inf, dtype=np.float32)
 
                 for dim, col in enumerate(df_x):
                     df_dim = df_x[col]
