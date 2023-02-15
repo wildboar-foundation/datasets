@@ -2,17 +2,14 @@
   "name": "wildboar",
   "version": "1.1",
   "wildboar_requires": "1.1.0rc1",
-  "bundle_url": "https://github.com/isaksamsten/wildboar-datasets/releases/download/{bundle}-v{version}/{tag}",
+  "bundle_url": "https://github.com/wildboar-foundataion/datasets/releases/download/{bundle}-v{version}/{tag}",
   "bundles": [
     {
       "key": "ucrmts",
       "version": "1.0",
       "name": "UCR Time series repository (MTS)",
       "description": "A collection of multivariate datasets from the UCR Time Series ClassificationRepository.",
-      "arrays": [
-        "x",
-        "y"
-      ],
+      "arrays": ["x", "y"],
       "collections": {
         "uniform-length": [
           "ArticularyWordRecognition",
@@ -49,10 +46,7 @@
       "version": "1.0",
       "name": "UCR Time series repository",
       "description": "A collection of 128 univariate time series. Downloaded from UCR Time series repository",
-      "arrays": [
-        "x",
-        "y"
-      ],
+      "arrays": ["x", "y"],
       "collections": {
         "bake-off": [
           "Adiac",
@@ -263,30 +257,21 @@
       "version": "1.0.2",
       "name": "UCR Time series repository (sample)",
       "description": "A collection of 5 univariate time series. Downloaded from UCR Time series repository",
-      "arrays": [
-        "x",
-        "y"
-      ]
+      "arrays": ["x", "y"]
     },
     {
       "key": "outlier",
       "version": "1.0",
       "name": "UCR Time series repository (outlier detection)",
       "description": "A collection of univariate datasets from the UCR Time series repository, preprocessed for outlier detection using the Emmott labler.",
-      "arrays": [
-        "x",
-        "y"
-      ]
+      "arrays": ["x", "y"]
     },
     {
       "key": "tsereg",
       "version": "1.0",
       "name": "Monash, UEA & UCR Time Series Extrinsic Regression Repository",
       "description": "A collection of multivariate datasets from the Monash, UEA & UCR Time Series Extrinsic Regression Repository.",
-      "arrays": [
-        "x",
-        "y"
-      ],
+      "arrays": ["x", "y"],
       "collections": {
         "uniform-length": [
           "AustraliaRainfall",
