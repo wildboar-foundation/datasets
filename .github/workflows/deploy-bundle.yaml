@@ -1,5 +1,8 @@
 name: Deploy outlier datasets
-on: [push]
+on:
+  push:
+    tags:
+      - "outlier-v*"
 
 jobs:
   build_bundle:
@@ -32,16 +35,6 @@ jobs:
         with:
           name: bundles
           path: bundles/*
-
-  deploy_bundle:
-    name: Deploy data bundle
-    runs-on: ubuntu-latest
-    if: startsWith(github.event.ref, 'refs/tags/outlier-v')
-    steps:
-      - uses: actions/download-artifact@v2
-        with:
-          name: bundles
-          path: bundles
 
       - uses: actions/create-release@v1
         env:
