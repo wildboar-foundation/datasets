@@ -8,23 +8,15 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - uses: actions/checkout@v2
-        with:
-          repository: isaksamsten/wildboar
-          ref: 8368120c7835deac5b7cd360eb7d07db119d389a
-          path: wildboar/
-
       - uses: actions/setup-python@v2
         name: Install Python
         with:
-          python-version: '3.8'
+          python-version: "3.8"
 
       - name: Install dependencies
         run: |
           pip install -U pip
           pip install -r requirements.txt
-          pip install -r wildboar/requirements.txt
-          pip install ./wildboar
 
       - name: Build data bundles
         run: |

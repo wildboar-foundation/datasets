@@ -1,3 +1,4 @@
 networkx==2.5
 requests==2.5.1
 scikit-learn-extra==0.1.0b2
+wildboar==1.0.12
