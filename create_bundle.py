@@ -18,7 +18,6 @@ def download_file(url, filename):
 if __name__ == "__main__":
     DATASET_FILE = os.environ.get("CB_DATASET_FILE", "datasets.zip")
     RESULT_DIR = os.environ.get("CB_RESULT_DIR", "npy")
-    NO_MISSING = int(os.environ.get("CB_NO_MISSING", "0")) == 1
     if not os.path.exists(DATASET_FILE):
         download_file(
             "http://www.timeseriesclassification.com/Downloads/Archives/Univariate2018_arff.zip",
@@ -31,6 +30,7 @@ if __name__ == "__main__":
         for archive_file in archive.filelist:
             path, ext = os.path.splitext(archive_file.filename)
             filename = os.path.basename(path)
+            print(f"Processing {filename}")
             if ext == ".arff" and (
                 filename.endswith("_TRAIN") or filename.endswith("_TEST")
             ):
@@ -39,11 +39,10 @@ if __name__ == "__main__":
                 ) as io_wrapper:
                     arff, _metadata = loadarff(io_wrapper)
                     arr = np.array(arff.tolist()).astype(np.float32)
-                    if NO_MISSING and np.any(np.isnan(arr)):
-                        continue
-                    np.save(
-                        os.path.join(RESULT_DIR, filename) + ".npy",
-                        arr,
-                        allow_pickle=False,
-                        fix_imports=False,
+                    x = arr[:, :-1]
+                    y = arr[:, -1]
+                    np.savez(
+                        os.path.join(RESULT_DIR, filename) + ".npz",
+                        x=x,
+                        y=y.reshape(-1),
                     )
