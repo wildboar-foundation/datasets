@@ -6,10 +6,10 @@
   "bundles": [
     {
       "key": "ucrmts",
-      "version": "1.0",
+      "version": "2.0",
       "name": "UCR Time series repository (MTS)",
       "description": "A collection of multivariate datasets from the UCR Time Series ClassificationRepository.",
-      "arrays": ["x", "y"],
+      "arrays": ["x", "y", "labels"],
       "collections": {
         "uniform-length": [
           "ArticularyWordRecognition",
