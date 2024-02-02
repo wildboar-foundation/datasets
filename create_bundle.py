@@ -1,10 +1,12 @@
 import io
+import warnings
 import requests
 import zipfile
 import os
 import numpy as np
 import pandas as pd
 import sys
+from wildboar.utils.variable_len import EoS, is_end_of_series
 
 
 # The following code is adapted from the python package sktime to read .ts file.
@@ -104,7 +106,6 @@ def load_from_tsfile_to_dataframe(
                     metadata_started = True
 
                 elif line.startswith("@timestamps"):
-
                     # Check that the data has not started
 
                     if data_started:
@@ -133,7 +134,6 @@ def load_from_tsfile_to_dataframe(
                     metadata_started = True
 
                 elif line.startswith("@univariate"):
-
                     # Check that the data has not started
 
                     if data_started:
@@ -164,7 +164,6 @@ def load_from_tsfile_to_dataframe(
                     metadata_started = True
 
                 elif line.startswith("@classlabel"):
-
                     # Check that the data has not started
 
                     if data_started:
@@ -204,7 +203,6 @@ def load_from_tsfile_to_dataframe(
                 # Check if this line contains the start of data
 
                 elif line.startswith("@data"):
-
                     if line != "@data":
                         raise TsFileParseException(
                             "data tag should not have an associated value"
@@ -221,7 +219,6 @@ def load_from_tsfile_to_dataframe(
                 # parsed and data can be loaded
 
                 elif data_started:
-
                     # Check that a full set of metadata has been provided
 
                     if (
@@ -243,7 +240,6 @@ def load_from_tsfile_to_dataframe(
                     # Check if we dealing with data that has timestamps
 
                     if timestamps:
-
                         # We're dealing with timestamps so cannot just split
                         # line on ':' as timestamps may contain one
 
@@ -258,7 +254,6 @@ def load_from_tsfile_to_dataframe(
                         char_num = 0
 
                         while char_num < line_len:
-
                             # Move through any spaces
 
                             while char_num < line_len and str.isspace(line[char_num]):
@@ -268,7 +263,6 @@ def load_from_tsfile_to_dataframe(
                             # we should validate that read thus far
 
                             if char_num < line_len:
-
                                 # See if we have an empty dimension (i.e. no
                                 # values)
 
@@ -290,11 +284,9 @@ def load_from_tsfile_to_dataframe(
                                     char_num += 1
 
                                 else:
-
                                     # Check if we have reached a class label
 
                                     if line[char_num] != "(" and class_labels:
-
                                         class_val = line[char_num:].strip()
 
                                         if class_val not in class_label_list:
@@ -317,7 +309,6 @@ def load_from_tsfile_to_dataframe(
                                         values_for_dimension = []
 
                                     else:
-
                                         # Read in the data contained within
                                         # the next tuple
 
@@ -719,8 +710,12 @@ def load_from_tsfile_to_dataframe(
 
         data = pd.DataFrame(dtype=np.float32)
 
-        for dim in range(0, num_dimensions):
-            data["dim_" + str(dim)] = instance_list[dim]
+        with warnings.catch_warnings():
+            warnings.simplefilter("ignore")
+            for dim in range(0, num_dimensions):
+                data["dim_" + str(dim)] = instance_list[dim]
+
+        data = data.copy()
 
         # Check if we should return any associated class labels separately
 
@@ -741,9 +736,15 @@ def load_from_tsfile_to_dataframe(
 def download_file(url, filename):
     with requests.get(url, stream=True) as r:
         r.raise_for_status()
+        total_length = r.headers.get("content-length")
+        length = 0
         with open(filename, "wb") as f:
             for chunk in r.iter_content(chunk_size=8192):
+                length += len(chunk)
+                sys.stdout.write(f"{length}/{total_length}")
                 f.write(chunk)
+                sys.stdout.flush()
+                sys.stdout.write("\r")
     return filename
 
 
@@ -752,7 +753,7 @@ if __name__ == "__main__":
     RESULT_DIR = os.environ.get("CB_RESULT_DIR", "npz")
     if not os.path.exists(DATASET_FILE):
         download_file(
-            "http://www.timeseriesclassification.com/Downloads/Archives/Multivariate2018_ts.zip",
+            "http://www.timeseriesclassification.com/aeon-toolkit/Archives/Multivariate2018_ts.zip",
             DATASET_FILE,
         )
     if not os.path.exists(RESULT_DIR):
@@ -783,7 +784,7 @@ if __name__ == "__main__":
                 )
 
                 # We use -INF to represent end of sequence
-                x = np.full((n_samples, n_dims, n_timestep), -np.inf, dtype=np.float32)
+                x = np.full((n_samples, n_dims, n_timestep), EoS, dtype=np.float32)
 
                 for dim, col in enumerate(df_x):
                     df_dim = df_x[col]
@@ -791,8 +792,13 @@ if __name__ == "__main__":
                         x[sample, dim, : len(sample_col)] = sample_col.values
 
                 x = np.squeeze(x)
+                assert (
+                    is_end_of_series(x.astype(np.float64)).sum()
+                    == is_end_of_series(x).sum()
+                )
                 np.savez(
                     os.path.join(RESULT_DIR, filename) + ".npz",
                     x=x,
                     y=inv.reshape(-1),
+                    labels=y,
                 )
