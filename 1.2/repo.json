@@ -9,7 +9,7 @@
       "version": "1.0",
       "name": "UCR Time series repository (MTS)",
       "description": "A collection of multivariate datasets from the UCR Time Series ClassificationRepository.",
-      "arrays": ["x", "y", "labels"],
+      "arrays": ["x", "y"],
       "collections": {
         "uniform-length": [
           "ArticularyWordRecognition",
