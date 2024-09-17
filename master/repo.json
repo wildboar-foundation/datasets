@@ -275,7 +275,7 @@
     },
     {
       "key": "tsereg",
-      "version": "1.0",
+      "version": "2.0",
       "name": "Monash, UEA & UCR Time Series Extrinsic Regression Repository",
       "description": "A collection of multivariate datasets from the Monash, UEA & UCR Time Series Extrinsic Regression Repository.",
       "arrays": ["x", "y"],
