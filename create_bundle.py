@@ -4,7 +4,8 @@ import zipfile
 import os
 import numpy as np
 import pandas as pd
-from scipy.io.arff import loadarff
+
+from wildboar.utils.variable_len import EOS, is_end_of_series
 
 
 # The following code is adapted from the python package sktime to read .ts file.
@@ -244,7 +245,6 @@ def load_from_tsfile_to_dataframe(
                             # See if there is any more data to read in or if we should validate that read thus far
 
                             if char_num < line_len:
-
                                 # See if we have an empty dimension (i.e. no values)
                                 if line[char_num] == ":":
                                     if len(instance_list) < (
@@ -284,7 +284,6 @@ def load_from_tsfile_to_dataframe(
                                         values_for_dimension = []
 
                                     else:
-
                                         # Read in the data contained within the next tuple
 
                                         if line[char_num] != "(" and not target_labels:
@@ -727,7 +726,7 @@ if __name__ == "__main__":
                 n_timestep = max(df_x[col].loc[0].size for col in df_x)
                 n_samples, n_dims = df_x.shape
 
-                x = np.full((n_samples, n_dims, n_timestep), -np.inf, dtype=np.float32)
+                x = np.full((n_samples, n_dims, n_timestep), EOS, dtype=np.float32)
 
                 for dim, col in enumerate(df_x):
                     df_dim = df_x[col]
@@ -736,6 +735,10 @@ if __name__ == "__main__":
                         x[sample, dim, :length] = sample_col.values
 
                 x = np.squeeze(x)
+                assert (
+                    is_end_of_series(x.astype(np.float64)).sum()
+                    == is_end_of_series(x).sum()
+                )
                 np.savez(
                     os.path.join(RESULT_DIR, filename) + ".npz", x=x, y=y.reshape(-1)
                 )
