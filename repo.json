@@ -316,6 +316,13 @@
           "IEEEPPG"
         ]
       }
+    },
+    {
+      "key": "tsereg-tiny",
+      "version": "1.0",
+      "name": "Monash, UEA & UCR Time Series Extrinsic Regression Repository (sample)",
+      "description": "A collection of multivariate datasets from the Monash, UEA & UCR Time Series Extrinsic Regression Repository.",
+      "arrays": ["x", "y"]
     }
   ]
 }
